@@ -1,5 +1,6 @@
 package com.playground.usermodule.serviceimpl;
 
+import com.playground.usermodule.aop.annotation.ExecutionTimeLogger;
 import com.playground.usermodule.dto.UserDto;
 import com.playground.usermodule.entity.User;
 import com.playground.usermodule.enums.UserRole;
@@ -106,6 +107,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
+    @ExecutionTimeLogger
     public List<UserDto> getAllUsers(String orderBy, int page, int recordsPerPage) {
         Pageable pageable = PageRequest.of(page, recordsPerPage, Sort.by(orderBy).ascending());
         List<User> users = userRepository.findAll(pageable).toList();
