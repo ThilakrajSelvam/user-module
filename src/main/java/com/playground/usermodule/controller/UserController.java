@@ -2,6 +2,7 @@ package com.playground.usermodule.controller;
 
 import com.playground.usermodule.dto.UserDto;
 import com.playground.usermodule.service.UserService;
+import io.micrometer.core.instrument.Timer;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class UserController {
 
     private final UserService userService;
 
+    private final Timer createUserTimer;
+
+
     /**
      * Saves the user details
      *
@@ -32,8 +36,8 @@ public class UserController {
     @PostMapping
     @ApiOperation(value = "Creates new User and returns the user details")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public UserDto createUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public UserDto createUser(@RequestBody UserDto userDto) throws Exception {
+        return createUserTimer.recordCallable(() -> userService.createUser(userDto));
     }
 
     /**
