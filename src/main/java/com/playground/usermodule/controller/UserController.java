@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class UserController {
     @PostMapping
     @ApiOperation(value = "Creates new User and returns the user details")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public UserDto createUser(@RequestBody UserDto userDto) throws Exception {
+    public UserDto createUser(@Valid @RequestBody UserDto userDto) throws Exception {
         return createUserTimer.recordCallable(() -> userService.createUser(userDto));
     }
 
@@ -60,7 +61,7 @@ public class UserController {
      */
     @PutMapping
     @ApiOperation(value = "Update the user details")
-    public UserDto updateUser(@RequestBody UserDto userDto) {
+    public UserDto updateUser(@Valid @RequestBody UserDto userDto) {
         return userService.updateUser(userDto);
     }
 
